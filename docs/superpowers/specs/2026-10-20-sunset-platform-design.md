@@ -25,7 +25,8 @@ GitHub Pages（靜態網頁）
         ▼
 Google Apps Script 網頁應用程式（doGet 回傳 JSON）
   ├─ 時間觸發器 09:00 / 12:00 / 15:00
-  │    └─ Sunsethue（3 個網格）＋ 氣象署鄉鎮預報 → 存入指令碼屬性
+  │    ├─ 讀取 GitHub Pages 上的 data/spots.json，取得要查的網格（regions）與鄉鎮（cwa_town）
+  │    └─ Sunsethue（每個網格）＋ 氣象署鄉鎮預報 → 存入指令碼屬性
   └─ 收到請求時
        └─ METAR／TAF（aviationweather.gov）→ CacheService 快取 10 分鐘
 ```
