@@ -89,7 +89,7 @@ quality >= 0.60 → Great
 
 ```
 if 景點所屬鄉鎮 pop >= 50%:
-    spot.vetoed = true        // 圖釘改為「不建議」樣式，不列入前三名
+    spot.vetoed = true        // 圖釘與卡片改為「不建議」樣式
 ```
 
 區域卡片以該區代表鄉鎮的 `pop` 判斷，規則相同。
