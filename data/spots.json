@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "0.5",
+    "version": "0.6",
     "updated": "2026-10-20",
     "notes": [
       "lat/lng 取自 Google Places。",
@@ -28,6 +28,7 @@
       "verified": false,
       "notes": "冬季日落偏南，太陽可能落在八里／觀音山稜線後，比實際日落早消失。",
       "ref_cams": [
+        "cam-tamsui",
         "cam-weifeng"
       ],
       "nav_url": "https://www.google.com/maps/dir/?api=1&destination=25.1689094,121.4414592",
@@ -52,7 +53,8 @@
       "verified": false,
       "notes": "位於河口，西側面向台灣海峽，全年太陽都落在海面上的機會高。",
       "ref_cams": [
-        "cam-weifeng"
+        "cam-fishermans",
+        "cam-tamsui"
       ],
       "nav_url": "https://www.google.com/maps/dir/?api=1&destination=25.1830233,121.4108016",
       "sunsethue_grid": "25,121.25",
@@ -99,9 +101,10 @@
         300
       ],
       "verified": false,
-      "notes": "海拔高，低雲時可能形成雲海；但山區易起霧，需另看能見度。",
+      "notes": "海拔高，低雲時可能形成雲海；但山區易起霧，需另看能見度。 天氣資料為淡水區平地預報，山頂通常較涼、風較大。",
       "ref_cams": [
-        "cam-weifeng"
+        "cam-erziping",
+        "cam-tamsui"
       ],
       "nav_url": "https://www.google.com/maps/dir/?api=1&destination=25.1761197,121.5213476",
       "sunsethue_grid": "25,121.5",
@@ -150,6 +153,7 @@
       "verified": false,
       "notes": "山頂近 360° 視野，全年都看得到落日方向；需爬階梯。",
       "ref_cams": [
+        "cam-guanyinshan",
         "cam-weifeng"
       ],
       "nav_url": "https://www.google.com/maps/dir/?api=1&destination=25.1273088,121.5187175",
@@ -173,7 +177,9 @@
       ],
       "verified": false,
       "notes": "海岸線大致面向西北，全年太陽都落在海面上；秋冬東北季風強。",
-      "ref_cams": [],
+      "ref_cams": [
+        "cam-xucuogang"
+      ],
       "nav_url": "https://www.google.com/maps/dir/?api=1&destination=25.0880967,121.1756916",
       "sunsethue_grid": "25,121",
       "horizon_block": "sea",
@@ -267,6 +273,54 @@
       "facing": "W–NW（台北101、市區）",
       "sees_west_sky": true,
       "verified": false
+    },
+    {
+      "id": "cam-tamsui",
+      "name": "淡水渡船頭",
+      "url": "https://www.youtube.com/watch?v=wamdV7N__Zg",
+      "source": "紅樹林有線電視",
+      "facing": "W–NW",
+      "sees_west_sky": true,
+      "verified": true
+    },
+    {
+      "id": "cam-fishermans",
+      "name": "淡水漁人碼頭",
+      "url": "https://www.youtube.com/watch?v=xwAWSh35uuw",
+      "source": "New Taipei City Tour（新北觀光）",
+      "facing": "N–NW",
+      "sees_west_sky": false,
+      "verified": true,
+      "note": "夏季日落偏北時可能拍到部分西北天空"
+    },
+    {
+      "id": "cam-erziping",
+      "name": "陽明山二子坪停車場",
+      "url": "https://www.youtube.com/watch?v=d9KuXrPCWYU",
+      "source": "陽明山國家公園管理處",
+      "facing": "停車場",
+      "sees_west_sky": false,
+      "verified": true,
+      "note": "可看天氣與停車場排隊狀況"
+    },
+    {
+      "id": "cam-guanyinshan",
+      "name": "觀音山硬漢嶺",
+      "url": "https://www.youtube.com/watch?v=gNWeZsaqD98",
+      "source": "北觀國家風景區管理處",
+      "facing": "E（關渡平原）",
+      "sees_west_sky": false,
+      "verified": true
+    },
+    {
+      "id": "cam-xucuogang",
+      "name": "許厝港濕地",
+      "url": "https://www.youtube.com/watch?v=44JArbF682k",
+      "source": "Taoyuan Travel（桃園觀光）",
+      "facing": "不定",
+      "sees_west_sky": null,
+      "verified": true,
+      "note": "鏡頭會轉動，當天氣參考"
     }
   ],
   "regions": [
