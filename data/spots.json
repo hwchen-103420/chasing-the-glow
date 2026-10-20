@@ -329,21 +329,24 @@
       "name": "淡水河口",
       "cwa_town": "新北市/淡水區",
       "lat": 25.0,
-      "lng": 121.25
+      "lng": 121.25,
+      "metar_overhead": "RCSS"
     },
     {
       "grid": "25,121.5",
       "name": "台北盆地",
       "cwa_town": "臺北市/中山區",
       "lat": 25.0,
-      "lng": 121.5
+      "lng": 121.5,
+      "metar_overhead": "RCSS"
     },
     {
       "grid": "25,121",
       "name": "桃園海岸",
       "cwa_town": "桃園市/大園區",
       "lat": 25.0,
-      "lng": 121.0
+      "lng": 121.0,
+      "metar_overhead": "RCTP"
     }
   ],
   "metar": {
