@@ -231,7 +231,7 @@ for spot in spots where spot.summit_cloud_ft != null:
 | `spots[].summit_cloud_ft` | 山頂雲層干擾門檻（ft），無則為 `null` |
 | `favorites` | 常造訪景點的 id 清單，依序顯示 |
 | `cams[]` | `id, name, url, source, facing, sees_west_sky, verified` |
-| `regions[]` | `grid, name, cwa_town, lat, lng` |
+| `regions[]` | `grid, name, cwa_town, metar_overhead, lat, lng` |
 | `metar` | `west_horizon`、`stations` |
 
 新增景點或直播只需要改這個檔案，不需要改程式。
