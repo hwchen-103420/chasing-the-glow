@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "0.4",
+    "version": "0.5",
     "updated": "2026-10-20",
     "notes": [
       "lat/lng 取自 Google Places。",
@@ -34,7 +34,8 @@
       "sunsethue_grid": "25,121.25",
       "horizon_block": "ridge",
       "cwa_town": "新北市/淡水區",
-      "metar_overhead": "RCSS"
+      "metar_overhead": "RCSS",
+      "summit_cloud_ft": null
     },
     {
       "id": "fishermans-wharf",
@@ -57,7 +58,8 @@
       "sunsethue_grid": "25,121.25",
       "horizon_block": "sea",
       "cwa_town": "新北市/淡水區",
-      "metar_overhead": "RCSS"
+      "metar_overhead": "RCSS",
+      "summit_cloud_ft": null
     },
     {
       "id": "dadaocheng-wharf",
@@ -81,7 +83,8 @@
       "sunsethue_grid": "25,121.5",
       "horizon_block": "buildings",
       "cwa_town": "臺北市/大同區",
-      "metar_overhead": "RCSS"
+      "metar_overhead": "RCSS",
+      "summit_cloud_ft": null
     },
     {
       "id": "datunshan-lookout",
@@ -104,7 +107,8 @@
       "sunsethue_grid": "25,121.5",
       "horizon_block": "sea",
       "cwa_town": "新北市/淡水區",
-      "metar_overhead": "RCSS"
+      "metar_overhead": "RCSS",
+      "summit_cloud_ft": 4000
     },
     {
       "id": "bishanyan",
@@ -128,7 +132,8 @@
       "sunsethue_grid": "25,121.5",
       "horizon_block": "ridge",
       "cwa_town": "臺北市/內湖區",
-      "metar_overhead": "RCSS"
+      "metar_overhead": "RCSS",
+      "summit_cloud_ft": null
     },
     {
       "id": "battleship-rock",
@@ -151,7 +156,8 @@
       "sunsethue_grid": "25,121.5",
       "horizon_block": "ridge",
       "cwa_town": "臺北市/北投區",
-      "metar_overhead": "RCSS"
+      "metar_overhead": "RCSS",
+      "summit_cloud_ft": null
     },
     {
       "id": "xucuogang-lookout",
@@ -172,7 +178,8 @@
       "sunsethue_grid": "25,121",
       "horizon_block": "sea",
       "cwa_town": "桃園市/大園區",
-      "metar_overhead": "RCTP"
+      "metar_overhead": "RCTP",
+      "summit_cloud_ft": null
     },
     {
       "id": "jiantan-weifeng",
@@ -195,7 +202,8 @@
       "sunsethue_grid": "25,121.5",
       "horizon_block": "ridge",
       "cwa_town": "臺北市/中山區",
-      "metar_overhead": "RCSS"
+      "metar_overhead": "RCSS",
+      "summit_cloud_ft": null
     },
     {
       "id": "xiangshan",
@@ -219,7 +227,8 @@
       "sunsethue_grid": "25,121.5",
       "horizon_block": "ridge",
       "cwa_town": "臺北市/信義區",
-      "metar_overhead": "RCSS"
+      "metar_overhead": "RCSS",
+      "summit_cloud_ft": null
     }
   ],
   "cams": [
@@ -289,5 +298,10 @@
       "RCSS",
       "RCTP"
     ]
-  }
+  },
+  "favorites": [
+    "dadaocheng-wharf",
+    "tamsui-golden-waterfront",
+    "datunshan-lookout"
+  ]
 }
