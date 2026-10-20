@@ -1,0 +1,293 @@
+{
+  "_meta": {
+    "version": "0.4",
+    "updated": "2026-10-20",
+    "notes": [
+      "lat/lng 取自 Google Places。",
+      "sunset_az_range 為計算值：所有景點全年日落方位角都在 244°（冬至）～296°（夏至）之間，差異小於 0.2°，因此不逐點儲存，由前端以 SunCalc 即時計算。",
+      "view_az_range 與 horizon 為依地形推估，verified=false 代表尚未實地確認，請到現場用指南針 App 校正。",
+      "導航：不計算出發時間，改用 https://www.google.com/maps/dir/?api=1&destination={lat},{lng}（不帶 origin 即從目前位置出發）。",
+      "cams.facing 為依影片說明推估，verified=false；請在日落時段打開直播確認畫面是否看得到西方天空。",
+      "API 金鑰不寫入此檔，之後放在 GAS 的指令碼屬性。",
+      "Sunsethue 已驗證（2026-10-20）：認證用 header x-api-key；網格 0.25°，9 個點只對應 3 個網格，依 sunsethue_grid 每格查一次即可。"
+    ]
+  },
+  "spots": [
+    {
+      "id": "tamsui-golden-waterfront",
+      "name": "淡水金色水岸（環河道路）",
+      "area": "新北淡水",
+      "lat": 25.1689094,
+      "lng": 121.4414592,
+      "type": "riverside",
+      "horizon": "河口＋觀音山稜線",
+      "view_az_range": [
+        235,
+        300
+      ],
+      "verified": false,
+      "notes": "冬季日落偏南，太陽可能落在八里／觀音山稜線後，比實際日落早消失。",
+      "ref_cams": [
+        "cam-weifeng"
+      ],
+      "nav_url": "https://www.google.com/maps/dir/?api=1&destination=25.1689094,121.4414592",
+      "sunsethue_grid": "25,121.25",
+      "horizon_block": "ridge",
+      "cwa_town": "新北市/淡水區",
+      "metar_overhead": "RCSS"
+    },
+    {
+      "id": "fishermans-wharf",
+      "name": "漁人碼頭",
+      "area": "新北淡水",
+      "lat": 25.1830233,
+      "lng": 121.4108016,
+      "type": "coast",
+      "horizon": "海平面",
+      "view_az_range": [
+        230,
+        310
+      ],
+      "verified": false,
+      "notes": "位於河口，西側面向台灣海峽，全年太陽都落在海面上的機會高。",
+      "ref_cams": [
+        "cam-weifeng"
+      ],
+      "nav_url": "https://www.google.com/maps/dir/?api=1&destination=25.1830233,121.4108016",
+      "sunsethue_grid": "25,121.25",
+      "horizon_block": "sea",
+      "cwa_town": "新北市/淡水區",
+      "metar_overhead": "RCSS"
+    },
+    {
+      "id": "dadaocheng-wharf",
+      "name": "大稻埕碼頭",
+      "area": "台北大同",
+      "lat": 25.0565135,
+      "lng": 121.507515,
+      "type": "riverside",
+      "horizon": "對岸建築（三重）",
+      "view_az_range": [
+        240,
+        300
+      ],
+      "verified": false,
+      "notes": "地平線被對岸建築擋住，太陽會提早消失；適合看天空染色而非落日本身。",
+      "ref_cams": [
+        "cam-dadaocheng",
+        "cam-weifeng"
+      ],
+      "nav_url": "https://www.google.com/maps/dir/?api=1&destination=25.0565135,121.507515",
+      "sunsethue_grid": "25,121.5",
+      "horizon_block": "buildings",
+      "cwa_town": "臺北市/大同區",
+      "metar_overhead": "RCSS"
+    },
+    {
+      "id": "datunshan-lookout",
+      "name": "大屯山觀景台",
+      "area": "新北淡水（陽明山）",
+      "lat": 25.1761197,
+      "lng": 121.5213476,
+      "type": "mountain",
+      "horizon": "海平面（高處俯瞰）",
+      "view_az_range": [
+        225,
+        300
+      ],
+      "verified": false,
+      "notes": "海拔高，低雲時可能形成雲海；但山區易起霧，需另看能見度。",
+      "ref_cams": [
+        "cam-weifeng"
+      ],
+      "nav_url": "https://www.google.com/maps/dir/?api=1&destination=25.1761197,121.5213476",
+      "sunsethue_grid": "25,121.5",
+      "horizon_block": "sea",
+      "cwa_town": "新北市/淡水區",
+      "metar_overhead": "RCSS"
+    },
+    {
+      "id": "bishanyan",
+      "name": "內湖碧山巖",
+      "area": "台北內湖",
+      "lat": 25.0968921,
+      "lng": 121.5877127,
+      "type": "mountain",
+      "horizon": "台北盆地＋觀音山",
+      "view_az_range": [
+        200,
+        280
+      ],
+      "verified": false,
+      "notes": "觀景台主要面向西南的市區；夏季日落偏北，可能落在視野範圍外，最需要實地確認。",
+      "ref_cams": [
+        "cam-bishanyan",
+        "cam-xiangshan"
+      ],
+      "nav_url": "https://www.google.com/maps/dir/?api=1&destination=25.0968921,121.5877127",
+      "sunsethue_grid": "25,121.5",
+      "horizon_block": "ridge",
+      "cwa_town": "臺北市/內湖區",
+      "metar_overhead": "RCSS"
+    },
+    {
+      "id": "battleship-rock",
+      "name": "軍艦岩",
+      "area": "台北北投",
+      "lat": 25.1273088,
+      "lng": 121.5187175,
+      "type": "mountain",
+      "horizon": "觀音山稜線＋關渡平原",
+      "view_az_range": [
+        200,
+        320
+      ],
+      "verified": false,
+      "notes": "山頂近 360° 視野，全年都看得到落日方向；需爬階梯。",
+      "ref_cams": [
+        "cam-weifeng"
+      ],
+      "nav_url": "https://www.google.com/maps/dir/?api=1&destination=25.1273088,121.5187175",
+      "sunsethue_grid": "25,121.5",
+      "horizon_block": "ridge",
+      "cwa_town": "臺北市/北投區",
+      "metar_overhead": "RCSS"
+    },
+    {
+      "id": "xucuogang-lookout",
+      "name": "許厝港觀景台",
+      "area": "桃園大園",
+      "lat": 25.0880967,
+      "lng": 121.1756916,
+      "type": "coast",
+      "horizon": "海平面",
+      "view_az_range": [
+        220,
+        340
+      ],
+      "verified": false,
+      "notes": "海岸線大致面向西北，全年太陽都落在海面上；秋冬東北季風強。",
+      "ref_cams": [],
+      "nav_url": "https://www.google.com/maps/dir/?api=1&destination=25.0880967,121.1756916",
+      "sunsethue_grid": "25,121",
+      "horizon_block": "sea",
+      "cwa_town": "桃園市/大園區",
+      "metar_overhead": "RCTP"
+    },
+    {
+      "id": "jiantan-weifeng",
+      "name": "劍潭山微風平台",
+      "area": "台北中山",
+      "lat": 25.0841035,
+      "lng": 121.5284672,
+      "type": "mountain",
+      "horizon": "觀音山稜線＋市區",
+      "view_az_range": [
+        240,
+        320
+      ],
+      "verified": false,
+      "notes": "面向士林、淡水河與觀音山；可一路待到夜景。",
+      "ref_cams": [
+        "cam-weifeng"
+      ],
+      "nav_url": "https://www.google.com/maps/dir/?api=1&destination=25.0841035,121.5284672",
+      "sunsethue_grid": "25,121.5",
+      "horizon_block": "ridge",
+      "cwa_town": "臺北市/中山區",
+      "metar_overhead": "RCSS"
+    },
+    {
+      "id": "xiangshan",
+      "name": "象山（六巨石觀景台）",
+      "area": "台北信義",
+      "lat": 25.0268286,
+      "lng": 121.5744153,
+      "type": "mountain",
+      "horizon": "台北盆地＋西側山稜（林口台地）",
+      "view_az_range": [
+        240,
+        320
+      ],
+      "verified": false,
+      "notes": "台北101在西北方（方位約308°），觀音山約307°；全年日落方位244–296°，太陽都落在101左側，不會與101對齊。步道陡、階梯多約20–30分鐘，假日日落時段人潮多。",
+      "ref_cams": [
+        "cam-xiangshan",
+        "cam-weifeng"
+      ],
+      "nav_url": "https://www.google.com/maps/dir/?api=1&destination=25.0268286,121.5744153",
+      "sunsethue_grid": "25,121.5",
+      "horizon_block": "ridge",
+      "cwa_town": "臺北市/信義區",
+      "metar_overhead": "RCSS"
+    }
+  ],
+  "cams": [
+    {
+      "id": "cam-weifeng",
+      "name": "劍潭山微風平台",
+      "url": "https://www.youtube.com/watch?v=34h_Cy_n0Ok",
+      "source": "LIVE Taipei（臺北市官方）",
+      "facing": "W–NW（觀音山、淡水河、士林）",
+      "sees_west_sky": true,
+      "verified": false
+    },
+    {
+      "id": "cam-dadaocheng",
+      "name": "大稻埕碼頭",
+      "url": "https://www.youtube.com/watch?v=Ndo_8RuefH4",
+      "source": "LIVE Taipei（臺北市官方）",
+      "facing": "不明（標題含台北101，可能朝東或沿河）",
+      "sees_west_sky": null,
+      "verified": false
+    },
+    {
+      "id": "cam-bishanyan",
+      "name": "碧山巖",
+      "url": "https://www.youtube.com/watch?v=uvwfYzwY8tg",
+      "source": "LIVE Taipei（臺北市官方）",
+      "facing": "S–SW（信義、南港、松山機場，西→東 180°）",
+      "sees_west_sky": false,
+      "verified": false
+    },
+    {
+      "id": "cam-xiangshan",
+      "name": "象山看台北",
+      "url": "https://www.youtube.com/watch?v=z_fY1pj1VBw",
+      "source": "LIVE Taipei（臺北市官方）",
+      "facing": "W–NW（台北101、市區）",
+      "sees_west_sky": true,
+      "verified": false
+    }
+  ],
+  "regions": [
+    {
+      "grid": "25,121.25",
+      "name": "淡水河口",
+      "cwa_town": "新北市/淡水區",
+      "lat": 25.0,
+      "lng": 121.25
+    },
+    {
+      "grid": "25,121.5",
+      "name": "台北盆地",
+      "cwa_town": "臺北市/中山區",
+      "lat": 25.0,
+      "lng": 121.5
+    },
+    {
+      "grid": "25,121",
+      "name": "桃園海岸",
+      "cwa_town": "桃園市/大園區",
+      "lat": 25.0,
+      "lng": 121.0
+    }
+  ],
+  "metar": {
+    "west_horizon": "RCTP",
+    "stations": [
+      "RCSS",
+      "RCTP"
+    ]
+  }
+}
