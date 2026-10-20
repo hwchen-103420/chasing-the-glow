@@ -130,12 +130,20 @@ best_window = golden_hour.start → blue_hour.end     // 例：17:11–17:52
 
 | 標記 | 條件 | 套用範圍 |
 |---|---|---|
-| 山頂視野可能受雲層干擾 | RCSS TAF 在最佳觀賞時段內有任一層雲，雲底 < `summit_cloud_ft` | `summit_cloud_ft` 有值的景點（目前只有大屯山，4000 ft） |
+| 山頂視野可能受雲層干擾 | RCSS TAF 在最佳觀賞時段內，或（15:00 後）RCSS 當下 METAR，有任一層雲（FEW 以上）雲底 < `summit_cloud_ft`；兩者任一符合即警示 | `summit_cloud_ft` 有值的景點（目前只有大屯山，4000 ft） |
 
 ```
 for spot in spots where spot.summit_cloud_ft != null:
+    low = layer => layer.cover in {FEW, SCT, BKN, OVC} and layer.base_ft < spot.summit_cloud_ft
+
     groups = RCSS TAF 中有效時間涵蓋 best_window 的預報組（含 TEMPO／BECMG）
-    if any(layer.base_ft < spot.summit_cloud_ft for layer in groups.clouds):
+    taf_hit = any(low(l) for g in groups for l in g.clouds)
+
+    metar_hit = false
+    if 現在時間 >= 15:00（台灣時間） and RCSS METAR 未過期（≤ 90 分鐘）:
+        metar_hit = any(low(l) for l in RCSS_METAR.clouds)
+
+    if taf_hit or metar_hit:
         spot.flags += "山頂視野可能受雲層干擾"
 ```
 
@@ -239,7 +247,7 @@ for spot in spots where spot.summit_cloud_ft != null:
 
 ## 9. 測試與驗證
 
-- **判斷邏輯單元測試**：等級分界（0.19／0.20／0.40／0.60）、否決（49／50%）、狀態判斷（方位在範圍端點、範圍外）、每一條提示標記的觸發與不觸發（含大屯山雲底 3999／4000 ft、TAF 預報組不涵蓋最佳時段）、常造訪景點的順序與不存在 id 的略過。判斷邏輯寫成純函式，不依賴網路。
+- **判斷邏輯單元測試**：等級分界（0.19／0.20／0.40／0.60）、否決（49／50%）、狀態判斷（方位在範圍端點、範圍外）、每一條提示標記的觸發與不觸發（含大屯山雲底 3999／4000 ft、TAF 預報組不涵蓋最佳時段、15:00 前後 METAR 是否納入、TAF 與 METAR 任一觸發）、常造訪景點的順序與不存在 id 的略過。判斷邏輯寫成純函式，不依賴網路。
 - **GAS 測試**：用固定的範例回應（今天實測的 Sunsethue JSON、METAR 原文）測試解析與格式轉換。
 - **實地對照**：上線後兩週，每次去看夕陽時對照網站判斷（狀態、提示標記）是否正確，用來校正 `view_az_range`、`horizon_block` 與標記門檻。
 
