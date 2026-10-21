@@ -1,0 +1,128 @@
+{
+  "date": "2026-10-20",
+  "updated_at": "2026-10-20T15:00:12+08:00",
+  "regions": {
+    "25,121.25": {
+      "date": "2026-10-20",
+      "quality": 0.37,
+      "quality_text": "Fair",
+      "cloud_cover": 0,
+      "sunset": "17:23",
+      "direction": 259.3,
+      "golden_hour": [
+        "17:11",
+        "17:37"
+      ],
+      "blue_hour": [
+        "17:42",
+        "17:53"
+      ]
+    },
+    "25,121.5": {
+      "date": "2026-10-20",
+      "quality": 0.36,
+      "quality_text": "Fair",
+      "cloud_cover": 0,
+      "sunset": "17:23",
+      "direction": 259.3,
+      "golden_hour": [
+        "17:11",
+        "17:37"
+      ],
+      "blue_hour": [
+        "17:42",
+        "17:52"
+      ]
+    },
+    "25,121": {
+      "date": "2026-10-20",
+      "quality": 0.36,
+      "quality_text": "Fair",
+      "cloud_cover": 0,
+      "sunset": "17:24",
+      "direction": 259.3,
+      "golden_hour": [
+        "17:12",
+        "17:38"
+      ],
+      "blue_hour": [
+        "17:43",
+        "17:54"
+      ]
+    }
+  },
+  "towns": {
+    "新北市/淡水區": {
+      "wx": "晴",
+      "temp": 29,
+      "pop": 10
+    },
+    "臺北市/大同區": {
+      "wx": "晴",
+      "temp": 31,
+      "pop": 0
+    },
+    "臺北市/內湖區": {
+      "wx": "晴",
+      "temp": 31,
+      "pop": 0
+    },
+    "臺北市/北投區": {
+      "wx": "晴",
+      "temp": 30,
+      "pop": 0
+    },
+    "桃園市/大園區": {
+      "wx": "晴",
+      "temp": 29,
+      "pop": 0
+    },
+    "臺北市/中山區": {
+      "wx": "晴",
+      "temp": 31,
+      "pop": 0
+    },
+    "臺北市/信義區": {
+      "wx": "晴",
+      "temp": 31,
+      "pop": 0
+    }
+  },
+  "metar": {
+    "RCSS": {
+      "icaoId": "RCSS",
+      "obsTime": 1792465200,
+      "visib": "6+",
+      "temp": 34,
+      "dewp": 26,
+      "clouds": [
+        {
+          "cover": "FEW",
+          "base": 2000
+        },
+        {
+          "cover": "SCT",
+          "base": 3500
+        }
+      ],
+      "rawOb": "METAR RCSS 200300Z VRB02KT 9999 FEW020 SCT035 34/26 Q1015 NOSIG RMK A2998",
+      "rawTaf": "TAF RCSS 192300Z 2000/2024 09008KT 9999 FEW015 TEMPO 2003/2009 10013KT TEMPO 2018/2024 VRB05KT"
+    },
+    "RCTP": {
+      "icaoId": "RCTP",
+      "obsTime": 1792465200,
+      "visib": "6+",
+      "temp": 31,
+      "dewp": 25,
+      "clouds": [
+        {
+          "cover": "FEW",
+          "base": 1500
+        }
+      ],
+      "rawOb": "METAR RCTP 200300Z 33006KT 270V360 9999 FEW015 31/25 Q1015 NOSIG RMK A3000",
+      "rawTaf": "TAF RCTP 192300Z 2000/2106 01005KT 9999 FEW015 TEMPO 2003/2009 30010KT BECMG 2010/2012 09005KT TEMPO 2016/2022 16005KT BECMG 2022/2024 06010KT"
+    }
+  },
+  "errors": []
+}
