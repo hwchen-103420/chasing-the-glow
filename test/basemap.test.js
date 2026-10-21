@@ -13,6 +13,17 @@ test('basemap has land, coast and county-border layers', () => {
   assert.equal(b.coast.type, 'MultiLineString');
   assert.equal(b.borders.type, 'MultiLineString');
   assert.ok(b.attribution.includes('內政部'));
+  assert.ok(b.attribution.includes('OpenStreetMap'));
+});
+
+test('basemap rivers cover the Tamsui river system only', () => {
+  const b = read('../data/basemap.json');
+  assert.equal(b.rivers.type, 'FeatureCollection');
+  const lines = b.rivers.features.filter(f => f.properties.kind === 'line').map(f => f.properties.name);
+  for (const n of ['淡水河', '基隆河', '新店溪', '大漢溪']) assert.ok(lines.includes(n), n);
+  const names = new Set(b.rivers.features.map(f => f.properties.name).filter(Boolean));
+  for (const n of ['磺溪', '外雙溪', '瑪鋉溪', '圓山河']) assert.ok(!names.has(n), n);
+  assert.ok(b.rivers.features.some(f => f.properties.kind === 'area'));
 });
 
 test('basemap land extent covers every spot', () => {
@@ -27,5 +38,5 @@ test('basemap land extent covers every spot', () => {
 });
 
 test('basemap stays small enough to load fast', () => {
-  assert.ok(statSync(url).size < 250_000, `${statSync(url).size} bytes`);
+  assert.ok(statSync(url).size < 400_000, `${statSync(url).size} bytes`);
 });

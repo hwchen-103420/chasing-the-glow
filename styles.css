@@ -121,6 +121,8 @@ h1,h2,h3,p,ul{margin:0}
 #map{background:oklch(0.92 0.02 225)}
 .land{fill:#f4f0e8;fill-opacity:1}
 .coast{stroke:oklch(0.62 0.03 225);stroke-width:1;fill:none}
+.river-area{fill:oklch(0.92 0.02 225);fill-opacity:1}
+.river-line{stroke:oklch(0.84 0.04 225);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;fill:none}
 .county-border{stroke:var(--ink-3);stroke-width:1;stroke-dasharray:4 4;fill:none;stroke-opacity:.7}
 .leaflet-control-attribution{font-size:10px;background:rgba(255,253,250,.8)!important}
 .leaflet-bar a{color:var(--ink)}

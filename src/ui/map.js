@@ -13,6 +13,14 @@ export function createMap(el, basemap) {
   map.fitBounds([[24.95, 121.1], [25.3, 121.65]]);      // initial view; renderPins refits to the spots
   if (basemap) {
     L.geoJSON(basemap.land, { className: 'land', interactive: false, style: { stroke: false } }).addTo(map);
+    if (basemap.rivers) {
+      L.geoJSON(basemap.rivers, {
+        interactive: false,
+        style: f => (f.properties.kind === 'area'
+          ? { className: 'river-area', stroke: false }
+          : { className: 'river-line' }),
+      }).addTo(map);
+    }
     L.geoJSON(basemap.borders, { className: 'county-border', interactive: false }).addTo(map);
     L.geoJSON(basemap.coast, { className: 'coast', interactive: false }).addTo(map);
     map.attributionControl.addAttribution(basemap.attribution);
