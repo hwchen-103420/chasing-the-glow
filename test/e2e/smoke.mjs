@@ -54,7 +54,7 @@ try {
   assert.ok((await page.locator('#detail iframe').getAttribute('src')).includes('d9KuXrPCWYU'));
   assert.ok(await page.locator('.pin[data-id="datunshan-lookout"]').evaluate(e => e.classList.contains('is-selected')));
   assert.deepEqual(errors, []);
-  await page.screenshot({ path: `${ROOT}.superpowers/smoke.png` });
+  await page.screenshot({ path: `${ROOT}.superpowers/sdd/smoke.png` });
 
   const failed = await openPage(route => route.fulfill({ status: 500, body: 'error' }));
   assert.ok((await failed.page.locator('#banner').innerText()).includes('無法取得資料'));
