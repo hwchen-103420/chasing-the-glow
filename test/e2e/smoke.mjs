@@ -38,18 +38,25 @@ async function openPage(apiHandler) {
 try {
   const { page, errors } = await openPage(route => route.fulfill({ json: api }));
   assert.equal(await page.locator('.pin').count(), 9);
-  assert.equal(await page.locator('#regions .card').count(), 3);
-  assert.deepEqual(await page.locator('#favorites .card').evaluateAll(els => els.map(e => e.dataset.id)),
+  assert.equal(await page.locator('#regions > .region-card').count(), 3);
+  const region = await page.locator('#regions > .region-card').nth(1).innerText();
+  assert.ok(region.includes('降雨 0%') && !region.includes('降雨 降雨'), region);
+  assert.ok(region.includes('17:11–17:52') && !region.includes('最佳時段 最佳時段'), region);
+  assert.ok((await page.locator('#updated .updated-time').innerText()).startsWith('分數更新於'));
+  assert.equal(await page.locator('#updated .updated-src').count(), 1);
+  assert.equal(await page.locator('path.sun-ray').count(), 9);
+  assert.equal(await page.locator('path.sun-fan').count(), 9);
+  assert.deepEqual(await page.locator('#favorites > [data-id]').evaluateAll(els => els.map(e => e.dataset.id)),
     ['dadaocheng-wharf', 'tamsui-golden-waterfront', 'datunshan-lookout']);
 
   await page.hover('.pin[data-id="fishermans-wharf"]');
-  const tip = await page.locator('#tooltip').innerText();
+  const tip = await page.locator('.leaflet-tooltip .tip').innerText();
   assert.ok(tip.includes('Fair') && tip.includes('看得到落日到海平面'), tip);
 
-  await page.click('#favorites .card[data-id="dadaocheng-wharf"]');
+  await page.click('#favorites > [data-id="dadaocheng-wharf"]');
   assert.equal(await page.locator('#detail iframe').count(), 1);
   assert.ok((await page.locator('#detail iframe').getAttribute('src')).includes('Ndo_8RuefH4'));
-  await page.click('#favorites .card[data-id="datunshan-lookout"]');
+  await page.click('#favorites > [data-id="datunshan-lookout"]');
   assert.equal(await page.locator('#detail iframe').count(), 1);
   assert.ok((await page.locator('#detail iframe').getAttribute('src')).includes('d9KuXrPCWYU'));
   assert.ok(await page.locator('.pin[data-id="datunshan-lookout"]').evaluate(e => e.classList.contains('is-selected')));
@@ -57,7 +64,10 @@ try {
   await page.screenshot({ path: `${ROOT}.superpowers/sdd/smoke.png` });
 
   const failed = await openPage(route => route.fulfill({ status: 500, body: 'error' }));
-  assert.ok((await failed.page.locator('#banner').innerText()).includes('無法取得資料'));
+  assert.ok((await failed.page.locator('#banner .banner-text').innerText()).includes('無法取得資料'));
+  assert.ok(await failed.page.locator('#banner').evaluate(e => e.classList.contains('banner--error') && !e.hidden));
+  assert.equal(await failed.page.locator('#banner svg').count(), 1);
+  assert.equal(await failed.page.locator('path.sun-fan.is-muted').count(), 9);
   assert.equal(await failed.page.locator('.pin').count(), 9);
 
   console.log('smoke OK');

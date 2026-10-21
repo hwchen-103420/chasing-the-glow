@@ -5,7 +5,6 @@ export const TEXT = {
   noCam: '尚無直播',
   openYoutube: '在 YouTube 開啟',
   nav: 'Google 地圖導航',
-  switchCam: '切換直播',
   updated: t => `分數更新於 ${t}`,
 };
 
