@@ -28,6 +28,7 @@ test('TAF_WORSE only for groups overlapping 17–18 Taipei', () => {
   assert.deepEqual(run('TEMPO 2009/2012 -SHRA'), [FLAG.TAF_WORSE]);
   assert.deepEqual(run('TEMPO 2009/2012 BKN015'), [FLAG.TAF_WORSE]);
   assert.deepEqual(run('TEMPO 2012/2015 BKN010'), []);
+  assert.deepEqual(run('BECMG 2006/2008 BKN015'), [FLAG.TAF_WORSE]);
 });
 
 test('HAZE from visibility or small temperature–dewpoint spread', () => {

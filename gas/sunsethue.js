@@ -8,12 +8,13 @@ function sunsethueUrl(lat, lng, date) {
     '&date=' + date + '&type=sunset';
 }
 
-function parseSunsethue(json, date) {
+function parseSunsethue(json, date, fetchedAt) {
   var d = json && json.data;
   if (!d || !d.magics) throw new Error('Sunsethue: unexpected response ' + JSON.stringify(json).slice(0, 200));
   var t = sunsethueTime_().toTaipeiHHMM;
   return {
     date: date,
+    fetched_at: fetchedAt || null,
     quality: d.quality,
     quality_text: d.quality_text,
     cloud_cover: d.cloud_cover,

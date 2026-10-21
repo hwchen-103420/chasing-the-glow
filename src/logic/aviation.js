@@ -73,10 +73,38 @@ export function parseTaf(raw, now = new Date()) {
       continue;
     }
     const c = t.match(CLOUD_RE);
-    if (c) cur.clouds.push({ cover: c[1], baseFt: Number(c[2]) * 100 });
-    else if (WX_RE.test(t)) cur.wx.push(t);
+    if (c) {
+      cur.clouds.push({ cover: c[1], baseFt: Number(c[2]) * 100 });
+      cur.cloudsSet = true;
+    } else if (WX_RE.test(t)) {
+      cur.wx.push(t);
+      cur.wxSet = true;
+    } else if (t === 'CAVOK' || t === 'NSC' || t === 'SKC') {
+      cur.cloudsSet = true;
+      if (t === 'CAVOK') cur.wxSet = true;
+    } else if (t === 'NSW') {
+      cur.wxSet = true;
+    }
   }
+  applyBecmg(groups);
+  for (const g of groups) { delete g.cloudsSet; delete g.wxSet; }
   return groups;
+}
+
+// BECMG: elements it omits stay as before; once its period ends the new
+// conditions replace the prevailing group until the next change or TAF end.
+function applyBecmg(groups) {
+  const prevailing = groups.filter(g => g.type === 'BASE' || g.type === 'FM');
+  for (const b of groups.filter(g => g.type === 'BECMG')) {
+    const prev = prevailing.filter(g => g.from <= b.from && g.to > b.from).at(-1);
+    if (!prev) continue;
+    if (!b.cloudsSet) b.clouds = prev.clouds.map(c => ({ ...c }));
+    if (!b.wxSet) b.wx = [...prev.wx];
+    const prevEnd = prev.to;
+    if (prev.to > b.to) prev.to = b.to;
+    b.to = prevEnd;
+    prevailing.push(b);
+  }
 }
 
 export function groupsOverlapping(groups, from, to) {

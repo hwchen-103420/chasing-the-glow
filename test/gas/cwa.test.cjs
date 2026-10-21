@@ -16,11 +16,20 @@ test('a window crossing 18:00 takes the higher rain probability', () => {
     { wx: '晴', temp: 31, pop: 60 });
 });
 
-test('missing elements give nulls instead of throwing', () => {
+test('a response without the requested town throws', () => {
+  const j = load();
+  j.records.Locations[0].Location = [];
+  assert.throws(() => selectTownWeather(j, '2026-10-20', { start: '17:11', end: '17:52' }, '中山區'));
+});
+
+test('a response for a different town throws', () => {
+  assert.throws(() => selectTownWeather(load(), '2026-10-20', { start: '17:11', end: '17:52' }, '大同區'));
+});
+
+test('a response without rain probability throws', () => {
   const j = load();
   j.records.Locations[0].Location[0].WeatherElement = [];
-  assert.deepEqual(selectTownWeather(j, '2026-10-20', { start: '17:11', end: '17:52' }),
-    { wx: null, temp: null, pop: null });
+  assert.throws(() => selectTownWeather(j, '2026-10-20', { start: '17:11', end: '17:52' }, '中山區'));
 });
 
 test('cwaUrl picks the county dataset and encodes the town', () => {

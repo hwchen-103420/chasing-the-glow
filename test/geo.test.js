@@ -23,5 +23,9 @@ test('youtubeEmbedUrl handles watch and short links', () => {
     'https://www.youtube.com/embed/34h_Cy_n0Ok?autoplay=1&mute=1');
   assert.equal(youtubeEmbedUrl('https://youtu.be/abcDEF12345'),
     'https://www.youtube.com/embed/abcDEF12345?autoplay=1&mute=1');
+  assert.equal(youtubeEmbedUrl('https://www.youtube.com/live/34h_Cy_n0Ok?si=abc'),
+    'https://www.youtube.com/embed/34h_Cy_n0Ok?autoplay=1&mute=1');
+  assert.equal(youtubeEmbedUrl('https://www.youtube.com/embed/34h_Cy_n0Ok'),
+    'https://www.youtube.com/embed/34h_Cy_n0Ok?autoplay=1&mute=1');
   assert.equal(youtubeEmbedUrl('not a url'), null);
 });

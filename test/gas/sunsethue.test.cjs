@@ -21,6 +21,10 @@ test('parseSunsethue converts times to Taipei HH:MM', () => {
   assert.equal(r.cloud_cover, 0);
 });
 
+test('parseSunsethue stamps fetched_at when given', () => {
+  assert.equal(parseSunsethue(fixture, '2026-10-20', '2026-10-20T15:00:05+08:00').fetched_at, '2026-10-20T15:00:05+08:00');
+});
+
 test('parseSunsethue rejects a response without data', () => {
   assert.throws(() => parseSunsethue({ error: 'unauthorized' }, '2026-10-20'));
 });

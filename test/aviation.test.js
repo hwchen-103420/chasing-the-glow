@@ -42,12 +42,22 @@ test('parseTaf reads base period and hour 24 as next day', () => {
   assert.equal(iso(last.to), '2026-10-21T00:00:00.000Z');
 });
 
-test('parseTaf reads BECMG periods and validity into the next day', () => {
+test('parseTaf: BECMG conditions persist and inherit unchanged clouds', () => {
   const g = parseTaf(rctp.rawTaf, now);
-  assert.equal(iso(g[0].to), '2026-10-21T06:00:00.000Z');
+  assert.equal(iso(g[0].to), '2026-10-20T12:00:00.000Z');          // base replaced once BECMG completes
   const becmg = g.find(x => x.type === 'BECMG');
   assert.equal(iso(becmg.from), '2026-10-20T10:00:00.000Z');
-  assert.equal(iso(becmg.to), '2026-10-20T12:00:00.000Z');
+  assert.equal(iso(becmg.to), '2026-10-21T00:00:00.000Z');         // until the next BECMG completes
+  assert.deepEqual(becmg.clouds, [{ cover: 'FEW', baseFt: 1500 }]); // wind-only BECMG keeps base clouds
+  const last = g.filter(x => x.type === 'BECMG').at(-1);
+  assert.equal(iso(last.to), '2026-10-21T06:00:00.000Z');
+});
+
+test('parseTaf: a BECMG cloud change applies after its period', () => {
+  const g = parseTaf('TAF RCTP 200500Z 2006/2112 25008KT 9999 FEW030 BECMG 2006/2008 BKN015', now);
+  const hit = groupsOverlapping(g, new Date('2026-10-20T09:00:00Z'), new Date('2026-10-20T10:00:00Z'));
+  assert.deepEqual(hit.map(x => x.type), ['BECMG']);
+  assert.deepEqual(hit[0].clouds, [{ cover: 'BKN', baseFt: 1500 }]);
 });
 
 test('parseTaf wraps validity into the next month', () => {

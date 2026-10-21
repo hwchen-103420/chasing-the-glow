@@ -15,7 +15,7 @@
 │   可見範圍淡色扇形               │ 3 個方塊                 │
 └──────────────────────────────┴────────────────────────┘
 #banner：頁面上方的提示橫幅（平常隱藏）
-#updated：頁尾「資料更新於 HH:MM」與資料來源
+#updated：頁尾「分數更新於 HH:MM」與資料來源
 #detail：點擊景點後的詳情卡浮層
 ```
 
@@ -88,7 +88,7 @@
 
 **圖示檔名（放在 `assets/icons/`）：** `status-sea.svg`、`status-blocked.svg`、`status-afterglow.svg`、`veto.svg`、`nodata.svg`、`favorite.svg`
 
-**文字：** 不建議、暫無分數、天氣參考、尚無直播、在 YouTube 開啟、Google 地圖導航、無法取得資料、資料不是今天的、資料更新於 HH:MM
+**文字：** 不建議、暫無分數、天氣參考、尚無直播、在 YouTube 開啟、Google 地圖導航、無法取得資料、資料不是今天的、分數更新於 HH:MM
 
 ## 5. 示意資料（2026-10-20 實測）
 

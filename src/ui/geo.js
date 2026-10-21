@@ -23,7 +23,9 @@ export function youtubeEmbedUrl(url) {
   try {
     const u = new URL(url);
     if (u.hostname === 'youtu.be') id = u.pathname.slice(1);
-    else if (u.hostname.endsWith('youtube.com')) id = u.searchParams.get('v');
+    else if (u.hostname.endsWith('youtube.com')) {
+      id = u.searchParams.get('v') ?? u.pathname.match(/^\/(?:live|embed)\/([\w-]+)/)?.[1] ?? null;
+    }
   } catch {
     return null;
   }

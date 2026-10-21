@@ -99,3 +99,19 @@ test('clear sky and summit flags reach the right spots', () => {
   assert.ok(byId(vm, 'datunshan-lookout').flags.includes('山頂視野可能受雲層干擾'));   // RCSS TAF FEW015
   assert.ok(!byId(vm, 'xiangshan').flags.includes('山頂視野可能受雲層干擾'));
 });
+
+test('updatedAt is the oldest score fetch among today\'s regions', () => {
+  const a = api();
+  a.regions['25,121.25'].fetched_at = '2026-10-20T15:00:05+08:00';
+  a.regions['25,121.5'].fetched_at = '2026-10-20T12:00:03+08:00';
+  a.regions['25,121'].fetched_at = '2026-10-20T15:00:07+08:00';
+  assert.equal(buildViewModel(spots(), a, now).updatedAt, '12:00');
+});
+
+test('weather without a rain probability counts as missing', () => {
+  const a = api();
+  a.towns['臺北市/大同區'] = { wx: null, temp: null, pop: null };
+  const s = byId(buildViewModel(spots(), a, now), 'dadaocheng-wharf');
+  assert.equal(s.weather, null);
+  assert.ok(s.flags.includes('降雨資料暫缺'));
+});

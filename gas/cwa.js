@@ -28,7 +28,13 @@ function cwaNumber_(v) {
   return isNaN(n) ? null : n;
 }
 
-function selectTownWeather(json, date, window) {
+function selectTownWeather(json, date, window, townName) {
+  var loc = json && json.records && json.records.Locations && json.records.Locations[0] &&
+    json.records.Locations[0].Location && json.records.Locations[0].Location[0];
+  if (!loc) throw new Error('CWA: no location in response');
+  if (townName && loc.LocationName !== townName) {
+    throw new Error('CWA: expected ' + townName + ' but got ' + loc.LocationName);
+  }
   var start = Date.parse(date + 'T' + window.start + ':00+08:00');
   var end = Date.parse(date + 'T' + window.end + ':00+08:00');
 
@@ -51,6 +57,7 @@ function selectTownWeather(json, date, window) {
     if (Date.parse(t.DataTime) === hour) temp = cwaNumber_(t.ElementValue[0].Temperature);
   });
 
+  if (pop === null) throw new Error('CWA: no rain probability for the window');
   return { wx: wx, temp: temp, pop: pop };
 }
 

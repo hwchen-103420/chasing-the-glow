@@ -21,7 +21,10 @@ export function buildViewModel(spotsData, api, now) {
     const r = api?.regions?.[grid];
     return r && r.date === today ? r : null;
   };
-  const townData = town => (api ? api.towns?.[town] ?? null : null);
+  const townData = town => {
+    const w = api?.towns?.[town];
+    return w && typeof w.pop === 'number' ? w : null;
+  };
   const trusted = Boolean(api) && api.date === today;
 
   const metars = {};
@@ -96,5 +99,15 @@ export function buildViewModel(spotsData, api, now) {
     else console.warn(`favorites: unknown spot id "${id}"`);
   }
 
-  return { banners, updatedAt: api?.updated_at ? toHHMM(api.updated_at) : null, regions, spots, favorites };
+  // Score freshness: the oldest successful Sunsethue fetch among today's regions.
+  const fetched = (spotsData.regions ?? [])
+    .map(reg => regionData(reg.grid)?.fetched_at)
+    .filter(Boolean)
+    .map(t => new Date(t))
+    .filter(d => !Number.isNaN(d.getTime()))
+    .sort((a, b) => a - b);
+  const updatedAt = fetched.length ? toHHMM(fetched[0].toISOString())
+    : api?.updated_at ? toHHMM(api.updated_at) : null;
+
+  return { banners, updatedAt, regions, spots, favorites };
 }

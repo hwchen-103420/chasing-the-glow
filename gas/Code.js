@@ -29,7 +29,7 @@ function refreshDaily() {
         headers: { 'x-api-key': props.getProperty('SUNSETHUE_KEY') },
         muteHttpExceptions: true,
       });
-      out.regions[reg.grid] = parseSunsethue(JSON.parse(res.getContentText()), date);
+      out.regions[reg.grid] = parseSunsethue(JSON.parse(res.getContentText()), date, out.updated_at);
     } catch (e) {
       out.errors.push('sunsethue:' + reg.grid);
       console.error(e);
@@ -47,7 +47,7 @@ function refreshDaily() {
       : DEFAULT_WINDOW;
     try {
       var json = fetchJson_(cwaUrl(town, date, props.getProperty('CWA_KEY')));
-      out.towns[town] = selectTownWeather(json, date, window);
+      out.towns[town] = selectTownWeather(json, date, window, town.split('/')[1]);
     } catch (e) {
       out.errors.push('cwa:' + town);
       console.error(e);
