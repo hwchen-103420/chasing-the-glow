@@ -1,5 +1,5 @@
 export const CONFIG = {
-  gasUrl: '',                      // GAS web app URL, filled in at deploy (Task 10)
+  gasUrl: 'https://script.google.com/macros/s/AKfycbxkiYtlZfftMuMW8RQNFCfpmdpsAjvJJwaqYWnzV5KHONhtNSGiXyb0MZI2UzFuQeme/exec',
   tierBounds: [0.20, 0.40, 0.60],
   vetoPop: 50,
   lowCloudFt: 3000,
