@@ -19,7 +19,10 @@ function showBanner(messages) {
 }
 
 async function main() {
-  const spotsData = await loadJson('data/spots.json');
+  const [spotsData, basemap] = await Promise.all([
+    loadJson('data/spots.json'),
+    loadJson('data/basemap.json').catch(e => { console.error(e); return null; }),
+  ]);
   // ?api=<url> overrides the configured endpoint (used by tests and for local fixtures).
   const apiUrl = new URLSearchParams(location.search).get('api') || CONFIG.gasUrl;
   let api = null;
@@ -31,7 +34,7 @@ async function main() {
   showBanner(vm.banners);
   document.querySelector('#updated .updated-time').textContent = vm.updatedAt ? TEXT.updated(vm.updatedAt) : '';
 
-  const map = createMap(document.querySelector('#map'));
+  const map = createMap(document.querySelector('#map'), basemap);
   let pins;
   const select = spot => {
     pins.select(spot.id);

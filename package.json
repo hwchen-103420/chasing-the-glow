@@ -8,6 +8,9 @@
   },
   "devDependencies": {
     "leaflet": "^1.9.4",
-    "playwright": "^1.56.0"
+    "playwright": "^1.56.0",
+    "taiwan-atlas": "^2021.9.20",
+    "topojson-client": "^3.1.0",
+    "topojson-simplify": "^3.0.3"
   }
 }

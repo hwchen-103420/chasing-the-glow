@@ -3,14 +3,20 @@ import { destinationPoint, sectorPolygon } from './geo.js';
 import { stateClasses, glyphSrc } from './labels.js';
 import { fillTemplate } from './panel.js';
 
-export function createMap(el) {
-  const map = L.map(el, { zoomControl: false });
-  L.control.zoom({ position: 'bottomright' }).addTo(map);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    attribution: '© OpenStreetMap contributors © CARTO',
-    subdomains: 'abcd',
-    maxZoom: 19,
-  }).addTo(map);
+// Fixed outline map: land, coastline and county borders only; no tiles, no pan or zoom.
+export function createMap(el, basemap) {
+  const map = L.map(el, {
+    zoomControl: false, dragging: false, scrollWheelZoom: false, doubleClickZoom: false,
+    boxZoom: false, keyboard: false, touchZoom: false, zoomSnap: 0, attributionControl: true,
+  });
+  map.attributionControl.setPrefix(false);
+  map.fitBounds([[24.95, 121.1], [25.3, 121.65]]);      // initial view; renderPins refits to the spots
+  if (basemap) {
+    L.geoJSON(basemap.land, { className: 'land', interactive: false, style: { stroke: false } }).addTo(map);
+    L.geoJSON(basemap.borders, { className: 'county-border', interactive: false }).addTo(map);
+    L.geoJSON(basemap.coast, { className: 'coast', interactive: false }).addTo(map);
+    map.attributionControl.addAttribution(basemap.attribution);
+  }
   return map;
 }
 
@@ -34,7 +40,7 @@ export function renderPins(map, spots, { onClick }) {
       riseOnHover: true,
     }).addTo(map);
     marker.bindTooltip(() => fillTemplate('tpl-tooltip', s), {
-      direction: 'top', offset: [0, -20], className: 'tip-wrap', opacity: 1,
+      direction: 'auto', offset: [18, 0], className: 'tip-wrap', opacity: 1,   // auto = left/right of the pin, so right-edge pins are not clipped
     });
     marker.on('click', () => { marker.closeTooltip(); onClick(s); });
     items.set(s.id, { pin: () => marker.getElement()?.querySelector('.pin'), fan });
@@ -44,6 +50,7 @@ export function renderPins(map, spots, { onClick }) {
     map.fitBounds(spots.map(s => [s.lat, s.lng]), { paddingTopLeft: [90, 70], paddingBottomRight: [70, 150] });
   };
   fit();
+  window.addEventListener('resize', fit);
   return {
     select(id) {
       for (const [sid, it] of items) {

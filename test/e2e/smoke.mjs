@@ -46,6 +46,10 @@ try {
   assert.equal(await page.locator('#updated .updated-src').count(), 1);
   assert.equal(await page.locator('path.sun-ray').count(), 9);
   assert.equal(await page.locator('path.sun-fan').count(), 9);
+  assert.ok((await page.locator('path.land').count()) >= 4);
+  assert.equal(await page.locator('.leaflet-tile').count(), 0);
+  assert.ok(!(await page.locator('#map').evaluate(e => e.classList.contains('leaflet-grab'))));
+  assert.equal(await page.locator('.leaflet-control-zoom').count(), 0);
   assert.deepEqual(await page.locator('#favorites > [data-id]').evaluateAll(els => els.map(e => e.dataset.id)),
     ['dadaocheng-wharf', 'tamsui-golden-waterfront', 'datunshan-lookout']);
 

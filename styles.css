@@ -26,7 +26,7 @@ h1,h2,h3,p,ul{margin:0}
 .app{display:grid;grid-template-rows:auto minmax(0,1fr);height:100vh;min-height:720px;min-width:1200px}
 .main{grid-row:2;display:grid;grid-template-columns:65fr 35fr;min-height:0}
 .map-wrap{position:relative;min-height:0}
-#map{position:absolute;inset:0;background:#eceeed}
+#map{position:absolute;inset:0}
 .panel{display:flex;flex-direction:column;gap:26px;padding:28px 28px 18px;background:var(--surface);border-left:1px solid var(--line);overflow:auto;min-height:0}
 
 .brand{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
@@ -116,9 +116,12 @@ h1,h2,h3,p,ul{margin:0}
 .sun-ray.is-muted{stroke:oklch(0.62 0.01 250)}
 .sun-fan.is-selected{fill-opacity:.28}
 
-/* 底圖調性 */
-.leaflet-container{font-family:var(--font);background:#eceeed}
-.leaflet-tile-pane{filter:saturate(.45) sepia(.06)}
+/* 底圖：只有輪廓（海洋＝背景、陸地、海岸線、縣市界） */
+.leaflet-container{font-family:var(--font);background:oklch(0.92 0.02 225)}
+#map{background:oklch(0.92 0.02 225)}
+.land{fill:#f4f0e8;fill-opacity:1}
+.coast{stroke:oklch(0.62 0.03 225);stroke-width:1;fill:none}
+.county-border{stroke:var(--ink-3);stroke-width:1;stroke-dasharray:4 4;fill:none;stroke-opacity:.7}
 .leaflet-control-attribution{font-size:10px;background:rgba(255,253,250,.8)!important}
 .leaflet-bar a{color:var(--ink)}
 
