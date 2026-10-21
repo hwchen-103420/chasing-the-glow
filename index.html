@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>觀夕平台</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script type="module" src="src/app.js"></script>
+</head>
+<body>
+  <div id="banner" role="status" hidden></div>
+  <main class="layout">
+    <div id="map" aria-label="景點地圖"></div>
+    <aside class="side">
+      <section>
+        <h2>今日概況</h2>
+        <div id="regions" class="regions"></div>
+      </section>
+      <section>
+        <h2>常造訪的景點</h2>
+        <div id="favorites" class="favorites"></div>
+      </section>
+    </aside>
+  </main>
+  <footer>
+    <span id="updated"></span>
+    <span class="sources">資料來源：Sunsethue、中央氣象署、aviationweather.gov、YouTube 直播</span>
+  </footer>
+  <div id="detail" hidden></div>
+
+  <template id="tpl-region-card">
+    <article class="card region-card">
+      <h3 data-field="name"></h3>
+      <p class="score"><span data-field="tier-text"></span> <span data-field="quality"></span></p>
+      <p class="weather"><span data-field="wx"></span> <span data-field="temp"></span> <span data-field="pop"></span></p>
+      <p data-field="window"></p>
+      <ul class="flags" data-field="flags"></ul>
+    </article>
+  </template>
+
+  <template id="tpl-tooltip">
+    <article class="card tooltip">
+      <h3 data-field="name"></h3>
+      <p class="score"><span data-field="tier-text"></span> <span data-field="quality"></span></p>
+      <p data-field="status-text"></p>
+      <p class="weather"><span data-field="wx"></span> <span data-field="temp"></span> <span data-field="pop"></span></p>
+      <ul class="flags" data-field="flags"></ul>
+    </article>
+  </template>
+
+  <template id="tpl-favorite-card">
+    <article class="card favorite-card">
+      <h3 data-field="name"></h3>
+      <p class="score"><span data-field="tier-text"></span> <span data-field="quality"></span></p>
+      <p data-field="status-text"></p>
+      <p class="weather"><span data-field="wx"></span> <span data-field="temp"></span> <span data-field="pop"></span></p>
+      <ul class="flags" data-field="flags"></ul>
+    </article>
+  </template>
+
+  <template id="tpl-detail">
+    <article class="card detail-card">
+      <header>
+        <h3 data-field="name"></h3>
+        <button type="button" data-field="close" aria-label="關閉">×</button>
+      </header>
+      <p class="score"><span data-field="tier-text"></span> <span data-field="quality"></span></p>
+      <p data-field="status-text"></p>
+      <p class="weather"><span data-field="wx"></span> <span data-field="temp"></span> <span data-field="pop"></span></p>
+      <p data-field="window"></p>
+      <ul class="flags" data-field="flags"></ul>
+      <div class="cam" data-field="cam"></div>
+      <p class="cam-meta">
+        <span data-field="cam-label"></span>
+        <button type="button" data-field="cam-switch" hidden></button>
+        <a data-field="cam-open"></a>
+      </p>
+      <a class="nav" data-field="nav"></a>
+    </article>
+  </template>
+</body>
+</html>
