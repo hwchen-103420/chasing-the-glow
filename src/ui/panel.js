@@ -29,6 +29,15 @@ export function renderRegions(el, regions) {
   el.replaceChildren(...regions.map(r => fillTemplate('tpl-region-card', r)));
 }
 
+// Cards are absolutely-positioned overlays (so hover can enlarge without moving the layout);
+// give every card the height of the tallest resting card so wrapped names never spill out.
+function fitFavoriteHeights(el) {
+  const cards = [...el.querySelectorAll('.fav-card')];
+  for (const c of cards) c.style.height = '';        // measure from the CSS default, so widening can shrink again
+  const tallest = Math.max(0, ...cards.map(c => c.querySelector('.fav-inner').offsetHeight));
+  for (const c of cards) c.style.height = tallest ? `${tallest}px` : '';
+}
+
 // Hover enlargement is pure CSS (.fav-card:hover); only clicks and Enter/Space need wiring.
 export function renderFavorites(el, favorites, { onClick }) {
   el.replaceChildren(...favorites.map(s => {
@@ -40,6 +49,9 @@ export function renderFavorites(el, favorites, { onClick }) {
     });
     return card;
   }));
+  fitFavoriteHeights(el);
+  document.fonts?.ready.then(() => fitFavoriteHeights(el));
+  window.addEventListener('resize', () => fitFavoriteHeights(el));
 }
 
 function showCam(card, spot, index) {

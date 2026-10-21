@@ -19,8 +19,8 @@ await new Promise(r => setTimeout(r, 800));
 const exe = existsSync('/opt/pw-browsers/chromium') ? '/opt/pw-browsers/chromium' : undefined;
 const browser = await chromium.launch(exe ? { executablePath: exe } : {});
 
-async function openPage(apiHandler) {
-  const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+async function openPage(apiHandler, viewport = { width: 1440, height: 900 }) {
+  const page = await browser.newPage({ viewport });
   const errors = [];
   page.on('pageerror', e => errors.push(e.message));
   await page.route('**/unpkg.com/leaflet@1.9.4/dist/**', route => {
@@ -74,6 +74,17 @@ try {
   assert.ok(await page.locator('.pin[data-id="datunshan-lookout"]').evaluate(e => e.classList.contains('is-selected')));
   assert.deepEqual(errors, []);
   await page.screenshot({ path: `${ROOT}.superpowers/sdd/smoke.png` });
+
+  assert.equal(await page.locator('.brand .tagline img').getAttribute('alt'), 'CHASING THE GLOW');
+  assert.ok(await page.locator('.brand .tagline img').evaluate(i => i.complete && i.naturalWidth > 0));
+
+  // Narrow window: long favourite names wrap; cards must still fit inside their own box.
+  const narrow = await openPage(route => route.fulfill({ json: api }), { width: 1200, height: 760 });
+  const overflow = await narrow.page.locator('#favorites > .fav-card').evaluateAll(cards => cards.map(c => {
+    const inner = c.querySelector('.fav-inner').getBoundingClientRect();
+    return Math.round(inner.bottom - c.getBoundingClientRect().bottom);
+  }));
+  assert.ok(overflow.every(d => d <= 1), `fav-inner overflows its card by ${overflow}px`);
 
   const failed = await openPage(route => route.fulfill({ status: 500, body: 'error' }));
   assert.ok((await failed.page.locator('#banner .banner-text').innerText()).includes('無法取得資料'));
