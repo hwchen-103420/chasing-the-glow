@@ -17,18 +17,19 @@
 
 1. 到 <https://script.google.com> → 新專案，命名「觀夕平台資料」。
 2. 專案設定（齒輪）→ 勾選「在編輯器中顯示 appsscript.json 資訊清單檔案」，再把內容換成 `gas/appsscript.json`。
-3. 新增 4 個指令碼檔案，內容分別貼上 `gas/time.js`、`gas/sunsethue.js`、`gas/cwa.js`、`gas/Code.js`（檔名可用 `time`、`sunsethue`、`cwa`、`Code`）。`gas/package.json` 不用貼。
+3. 新增 5 個指令碼檔案，內容分別貼上 `gas/time.js`、`gas/sunsethue.js`、`gas/cwa.js`、`gas/log.js`、`gas/Code.js`（檔名可用 `time`、`sunsethue`、`cwa`、`log`、`Code`）。`gas/package.json` 不用貼。
 4. 專案設定 → 指令碼屬性，新增三個：
    - `SUNSETHUE_KEY`：Sunsethue 金鑰
    - `CWA_KEY`：氣象署金鑰
    - `SPOTS_URL`：`https://<帳號>.github.io/<repo>/data/spots.json`
 5. 編輯器上方選函式 `refreshDaily` → 執行，依提示授權。執行紀錄沒有錯誤即可。
-6. 選函式 `installTriggers` → 執行（建立每天 09、12、15 時的自動更新）。
-7. 右上「部署」→ 新增部署作業 → 類型「網頁應用程式」：
+6. 選函式 `setupLog` → 執行（建立「觀夕平台 觀賞紀錄」試算表，網址會出現在執行記錄）。
+7. 選函式 `installTriggers` → 執行（建立每天 09:00、12:00、15:00、16:30 的自動更新）。
+8. 右上「部署」→ 新增部署作業 → 類型「網頁應用程式」：
    - 執行身分：**我**
    - 誰可以存取：**所有人**
    → 部署，複製網址（`https://script.google.com/macros/s/…/exec`）。
-8. 把網址填進 `src/config.js` 的 `gasUrl`，推上 GitHub。
+9. 把網址填進 `src/config.js` 的 `gasUrl`，推上 GitHub。
 
 **之後修改 GAS 程式**：改完要「部署 → 管理部署作業 → 編輯 → 版本：新版本」，網址不變。
 
@@ -46,6 +47,12 @@
 3. `npm run fonts` 重新產生字型子集（新名稱裡有新字時需要；`npm test` 會提醒）。
 4. 景點超出目前底圖範圍時，`npm run basemap` 重新產生底圖。
 5. 推上 GitHub。Apps Script 下一次自動更新時會讀到新景點。
+
+### 觀賞紀錄
+- 試算表「觀夕平台 觀賞紀錄」在你的 Google 雲端硬碟，有兩張工作表：
+  - `forecasts`：每次自動更新時各網格的分數、雲量、日落時間
+  - `ratings`：網站詳情卡送出的評分（1–10）與當下網站顯示的內容
+- 評分每小時上限 30 筆（防止濫用）；同一景點同一天可重複評分，每次新增一筆。
 
 ### 更換金鑰
 Apps Script → 專案設定 → 指令碼屬性，直接改值，不用重新部署。

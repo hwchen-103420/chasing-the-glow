@@ -145,6 +145,17 @@
       <p class="window"><span class="label">最佳時段</span><span data-field="window"></span></p>
       <ul class="flags" data-field="flags"></ul>
     </div>
+    <section class="rating" data-field="rating">
+      <p class="rating-title">今天實際看起來如何？</p>
+      <div class="rating-scale" role="group" aria-label="評分 1 到 10，10 最好看"></div>
+      <div class="rating-row">
+        <label><input type="radio" name="rating-mode" value="onsite" checked>現場</label>
+        <label><input type="radio" name="rating-mode" value="cam">看直播</label>
+        <input class="rating-note" type="text" maxlength="200" placeholder="一句話備註（可不填）">
+        <button class="rating-submit" type="button" disabled>送出</button>
+      </div>
+      <p class="rating-status" aria-live="polite"></p>
+    </section>
     <footer class="detail-actions">
       <a class="cam-open" data-field="cam-open" href="#" target="_blank" rel="noopener">在 YouTube 開啟</a>
       <a class="btn-nav" data-field="nav" href="#" target="_blank" rel="noopener">

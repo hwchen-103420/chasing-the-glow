@@ -55,7 +55,62 @@ function refreshDaily() {
   });
 
   props.setProperty('DAILY', JSON.stringify(out));
+  try {
+    appendRows_('forecasts', FORECAST_HEADER, forecastRows(out));
+  } catch (e) {
+    console.error(e);                     // logging must never break the daily refresh
+  }
   return out;
+}
+
+// ---------- Observation log (Google Sheet) ----------
+
+// Run once from the editor: creates the log spreadsheet and remembers its id.
+function setupLog() {
+  var props = PropertiesService.getScriptProperties();
+  if (props.getProperty('LOG_SHEET_ID')) return props.getProperty('LOG_SHEET_ID');
+  var ss = SpreadsheetApp.create('觀夕平台 觀賞紀錄');
+  ss.getSheets()[0].setName('ratings').appendRow(RATING_HEADER);
+  ss.insertSheet('forecasts').appendRow(FORECAST_HEADER);
+  props.setProperty('LOG_SHEET_ID', ss.getId());
+  console.log('Log sheet: ' + ss.getUrl());
+  return ss.getId();
+}
+
+function appendRows_(sheetName, header, rows) {
+  var id = PropertiesService.getScriptProperties().getProperty('LOG_SHEET_ID');
+  if (!id || !rows.length) return;
+  var sheet = SpreadsheetApp.openById(id).getSheetByName(sheetName);
+  if (sheet.getLastRow() === 0) sheet.appendRow(header);
+  sheet.getRange(sheet.getLastRow() + 1, 1, rows.length, header.length).setValues(rows);
+}
+
+function spotIds_() {
+  var cache = CacheService.getScriptCache();
+  var hit = cache.get('spot-ids');
+  if (hit) return JSON.parse(hit);
+  var ids = fetchJson_(PropertiesService.getScriptProperties().getProperty('SPOTS_URL'))
+    .spots.map(function (s) { return s.id; });
+  cache.put('spot-ids', JSON.stringify(ids), 3600);
+  return ids;
+}
+
+// Receives a rating from the site. Body is JSON sent as text/plain (avoids a CORS preflight).
+function doPost(e) {
+  var reply = function (obj) {
+    return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
+  };
+  try {
+    var cache = CacheService.getScriptCache();
+    var count = Number(cache.get('rating-count') || 0);
+    if (count >= 30) return reply({ ok: false, error: 'too many ratings this hour' });
+    var row = parseRating(e.postData.contents, spotIds_(), new Date());
+    appendRows_('ratings', RATING_HEADER, [row]);
+    cache.put('rating-count', String(count + 1), 3600);
+    return reply({ ok: true });
+  } catch (err) {
+    return reply({ ok: false, error: String(err.message || err) });
+  }
 }
 
 function fetchAviation_() {
@@ -88,6 +143,8 @@ function installTriggers() {
   [9, 12, 15].forEach(function (h) {
     ScriptApp.newTrigger('refreshDaily').timeBased().atHour(h).everyDays(1).create();
   });
+  // Latest forecast before sunset (Apps Script runs it within ~15 min of 16:30).
+  ScriptApp.newTrigger('refreshDaily').timeBased().atHour(16).nearMinute(30).everyDays(1).create();
 }
 
 function fetchJson_(url) {

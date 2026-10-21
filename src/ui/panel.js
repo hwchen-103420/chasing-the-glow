@@ -77,7 +77,50 @@ function showCam(card, spot, index) {
   if (open) Object.assign(open, { href: cam.url, hidden: false });
 }
 
-export function openDetail(spot, { onClose } = {}) {
+const PREV_KEY = (date, id) => `rating:${date}:${id}`;
+function readPrev(key) { try { return localStorage.getItem(key); } catch { return null; } }
+function writePrev(key, v) { try { localStorage.setItem(key, v); } catch { /* private mode etc. */ } }
+
+// 1–10 rating with on-site / live-cam mode and a short note. onRate returns a promise of {ok, error}.
+function wireRating(card, spot, onRate, today) {
+  const box = card.querySelector('[data-field="rating"]');
+  if (!box || !onRate) { box?.remove(); return; }
+  const scale = box.querySelector('.rating-scale');
+  const submit = box.querySelector('.rating-submit');
+  const status = box.querySelector('.rating-status');
+  let rating = null;
+  scale.replaceChildren(...Array.from({ length: 10 }, (_, i) => {
+    const b = Object.assign(document.createElement('button'), { type: 'button', textContent: String(i + 1) });
+    b.dataset.value = String(i + 1);
+    b.setAttribute('aria-pressed', 'false');
+    b.addEventListener('click', () => {
+      rating = i + 1;
+      for (const x of scale.children) x.setAttribute('aria-pressed', String(x === b));
+      submit.disabled = false;
+    });
+    return b;
+  }));
+  const prev = readPrev(PREV_KEY(today, spot.id));
+  if (prev) status.textContent = `今天已評過 ${prev} 分，再送出會新增一筆。`;
+  submit.addEventListener('click', async () => {
+    const mode = box.querySelector('input[name="rating-mode"]:checked')?.value ?? 'onsite';
+    const note = box.querySelector('.rating-note').value;
+    submit.disabled = true;
+    status.classList.remove('is-error');
+    status.textContent = '送出中…';
+    const res = await onRate(spot, { rating, mode, note }).catch(e => ({ ok: false, error: String(e) }));
+    if (res?.ok) {
+      writePrev(PREV_KEY(today, spot.id), String(rating));
+      status.textContent = `已記錄 ${rating} 分，謝謝！`;
+    } else {
+      status.classList.add('is-error');
+      status.textContent = `沒有送出成功（${res?.error ?? '未知錯誤'}），請稍後再試。`;
+      submit.disabled = false;
+    }
+  });
+}
+
+export function openDetail(spot, { onClose, onRate, today } = {}) {
   const host = $('#detail');
   host.replaceChildren();                        // drop any previous iframe first: one stream at a time
   const card = fillTemplate('tpl-detail', spot);
@@ -88,6 +131,7 @@ export function openDetail(spot, { onClose } = {}) {
     sw.hidden = spot.cams.length < 2;
     sw.addEventListener('click', () => { index = (index + 1) % spot.cams.length; showCam(card, spot, index); });
   }
+  wireRating(card, spot, onRate, today);
   const nav = card.querySelector('[data-field="nav"]');
   if (nav) nav.href = spot.nav_url;
   card.querySelector('[data-field="close"]')?.addEventListener('click', () => { closeDetail(); onClose?.(); });

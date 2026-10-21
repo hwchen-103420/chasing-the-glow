@@ -72,6 +72,25 @@ try {
   assert.equal(await page.locator('#detail iframe').count(), 1);
   assert.ok((await page.locator('#detail iframe').getAttribute('src')).includes('d9KuXrPCWYU'));
   assert.ok(await page.locator('.pin[data-id="datunshan-lookout"]').evaluate(e => e.classList.contains('is-selected')));
+
+  // Rating: pick 7, 'cam', add a note, submit; the POST body carries the snapshot.
+  let posted = null;
+  await page.route(`${API}**`, route => {
+    if (route.request().method() === 'POST') { posted = JSON.parse(route.request().postData()); return route.fulfill({ json: { ok: true } }); }
+    return route.fulfill({ json: api });
+  });
+  assert.equal(await page.locator('#detail .rating-scale button').count(), 10);
+  assert.ok(await page.locator('#detail .rating-submit').isDisabled());
+  await page.click('#detail .rating-scale button[data-value="7"]');
+  await page.check('#detail input[name="rating-mode"][value="cam"]');
+  await page.fill('#detail .rating-note', '雲縫透光');
+  await page.click('#detail .rating-submit');
+  await page.waitForFunction(() => document.querySelector('#detail .rating-status')?.textContent.includes('已記錄'));
+  assert.equal(posted.spot_id, 'datunshan-lookout');
+  assert.equal(posted.rating, 7);
+  assert.equal(posted.mode, 'cam');
+  assert.equal(posted.note, '雲縫透光');
+  assert.equal(posted.shown.tier, 'fair');
   assert.deepEqual(errors, []);
   await page.screenshot({ path: `${ROOT}.superpowers/sdd/smoke.png` });
 

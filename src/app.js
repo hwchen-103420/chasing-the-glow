@@ -3,7 +3,8 @@ import { buildViewModel, BANNER } from './logic/model.js';
 import { createMap, renderPins } from './ui/map.js';
 import { renderRegions, renderFavorites, openDetail, closeDetail } from './ui/panel.js';
 import { TEXT } from './ui/labels.js';
-import { formatClock } from './logic/core.js';
+import { formatClock, taipeiDate } from './logic/core.js';
+import { buildRatingPayload } from './logic/rating.js';
 
 async function loadJson(url) {
   const res = await fetch(url, { cache: 'no-store' });
@@ -45,9 +46,17 @@ async function main() {
 
   const map = createMap(document.querySelector('#map'), basemap);
   let pins;
+  // Ratings go to the same GAS web app via POST (text/plain avoids a CORS preflight).
+  const onRate = apiUrl ? async (spot, input) => {
+    const payload = buildRatingPayload(spot, input, { now: new Date(), updatedAt: vm.updatedAt });
+    const res = await fetch(apiUrl, {
+      method: 'POST', body: JSON.stringify(payload), headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    });
+    return res.json();
+  } : null;
   const select = spot => {
     pins.select(spot.id);
-    openDetail(spot, { onClose: () => pins.select(null) });
+    openDetail(spot, { onClose: () => pins.select(null), onRate, today: taipeiDate(new Date()) });
   };
   pins = renderPins(map, vm.spots, { onClick: select });
   window.addEventListener('load', pins.fit);
