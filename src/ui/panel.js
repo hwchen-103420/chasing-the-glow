@@ -13,7 +13,7 @@ export function fillTemplate(tplId, item) {
   root.classList.add(...stateClasses(item));
   setField(root, 'name', item.name);
   setField(root, 'tier-text', tierText(item));
-  setField(root, 'quality', typeof item.quality === 'number' ? `${Math.round(item.quality * 100)}%` : '—');
+  setField(root, 'quality', typeof item.quality === 'number' ? String(Math.round(item.quality * 100)) : '—');
   setField(root, 'status-text', item.status ? STATUS_TEXT[item.status] : '');
   setField(root, 'wx', item.weather?.wx ?? '—');
   setField(root, 'temp', typeof item.weather?.temp === 'number' ? `${item.weather.temp}°C` : '—');

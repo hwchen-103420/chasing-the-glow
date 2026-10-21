@@ -38,6 +38,14 @@ h1,h2,h3,p,ul{margin:0}
 .section-head h2{font-size:13px;font-weight:600;letter-spacing:.12em;color:var(--ink-2)}
 .section-head span{font-size:12px;color:var(--ink-3)}
 
+/* ---------- 今日：日期、時間、日落 ---------- */
+.today{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding:14px 16px;border-radius:14px;background:var(--paper);font-variant-numeric:tabular-nums}
+.today-now{display:flex;align-items:baseline;gap:12px}
+.today-date{font-size:15px;color:var(--ink-2)}
+.today-time{font-size:28px;font-weight:700;line-height:1;color:var(--ink)}
+.today-sunset{font-size:13px;color:var(--ink-2)}
+.today-sunset b{margin-left:4px;font-size:22px;font-weight:700;color:var(--sun)}
+
 /* ---------- 共用片段 ---------- */
 .tier-chip{display:inline-flex;align-items:center;gap:4px;flex:none;padding:1px 8px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--tier-ink);border:1.5px solid var(--tier-ink);line-height:18px;white-space:nowrap}
 .tier-nodata .tier-chip{border-style:dashed}

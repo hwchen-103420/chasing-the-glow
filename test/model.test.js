@@ -115,3 +115,11 @@ test('weather without a rain probability counts as missing', () => {
   assert.equal(s.weather, null);
   assert.ok(s.flags.includes('降雨資料暫缺'));
 });
+
+test('referenceSunset comes from the region marked sunset_reference', () => {
+  assert.equal(buildViewModel(spots(), api(), now).referenceSunset, '17:23');
+  const a = api();
+  delete a.regions['25,121.5'];
+  assert.equal(buildViewModel(spots(), a, now).referenceSunset, null);
+  assert.equal(buildViewModel(spots(), null, now).referenceSunset, null);
+});

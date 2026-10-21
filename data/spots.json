@@ -338,7 +338,8 @@
       "cwa_town": "臺北市/中山區",
       "lat": 25.0,
       "lng": 121.5,
-      "metar_overhead": "RCSS"
+      "metar_overhead": "RCSS",
+      "sunset_reference": true
     },
     {
       "grid": "25,121",

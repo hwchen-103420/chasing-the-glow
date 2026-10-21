@@ -39,6 +39,10 @@ try {
   const { page, errors } = await openPage(route => route.fulfill({ json: api }));
   assert.equal(await page.locator('.pin').count(), 9);
   assert.equal(await page.locator('#regions > .region-card').count(), 3);
+  assert.equal(await page.locator('#regions .quality').nth(1).innerText(), '36');
+  assert.equal(await page.locator('#today .today-sunset b').innerText(), '17:23');
+  assert.match(await page.locator('#today .today-time').innerText(), /^\d{2}:\d{2}$/);
+  assert.match(await page.locator('#today .today-date').innerText(), /^\d{1,2}月\d{1,2}日（[日一二三四五六]）$/);
   const region = await page.locator('#regions > .region-card').nth(1).innerText();
   assert.ok(region.includes('降雨 0%') && !region.includes('降雨 降雨'), region);
   assert.ok(region.includes('17:11–17:52') && !region.includes('最佳時段 最佳時段'), region);

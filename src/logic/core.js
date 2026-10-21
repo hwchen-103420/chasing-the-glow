@@ -42,3 +42,15 @@ export function taipeiHour(d) {
 export function hhmmToDate(dateStr, hhmm) {
   return new Date(Date.parse(`${dateStr}T${hhmm}:00Z`) - TPE_OFFSET_MS);
 }
+
+const WEEKDAYS = '日一二三四五六';
+
+export function formatClock(d) {
+  const t = new Date(d.getTime() + TPE_OFFSET_MS);
+  const hh = String(t.getUTCHours()).padStart(2, '0');
+  const mm = String(t.getUTCMinutes()).padStart(2, '0');
+  return {
+    date: `${t.getUTCMonth() + 1}月${t.getUTCDate()}日（${WEEKDAYS[t.getUTCDay()]}）`,
+    time: `${hh}:${mm}`,
+  };
+}

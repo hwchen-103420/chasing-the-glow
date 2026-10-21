@@ -3,6 +3,7 @@ import { buildViewModel, BANNER } from './logic/model.js';
 import { createMap, renderPins } from './ui/map.js';
 import { renderRegions, renderFavorites, openDetail, closeDetail } from './ui/panel.js';
 import { TEXT } from './ui/labels.js';
+import { formatClock } from './logic/core.js';
 
 async function loadJson(url) {
   const res = await fetch(url, { cache: 'no-store' });
@@ -32,6 +33,14 @@ async function main() {
   const vm = buildViewModel(spotsData, api, new Date());
 
   showBanner(vm.banners);
+  const tick = () => {
+    const { date, time } = formatClock(new Date());
+    document.querySelector('#today .today-date').textContent = date;
+    document.querySelector('#today .today-time').textContent = time;
+  };
+  tick();
+  setInterval(tick, 15_000);
+  document.querySelector('#today .today-sunset b').textContent = vm.referenceSunset ?? '—';
   document.querySelector('#updated .updated-time').textContent = vm.updatedAt ? TEXT.updated(vm.updatedAt) : '';
 
   const map = createMap(document.querySelector('#map'), basemap);

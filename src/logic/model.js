@@ -109,5 +109,8 @@ export function buildViewModel(spotsData, api, now) {
   const updatedAt = fetched.length ? toHHMM(fetched[0].toISOString())
     : api?.updated_at ? toHHMM(api.updated_at) : null;
 
-  return { banners, updatedAt, regions, spots, favorites };
+  const ref = (spotsData.regions ?? []).find(r => r.sunset_reference);
+  const referenceSunset = ref ? regionData(ref.grid)?.sunset ?? null : null;
+
+  return { banners, updatedAt, referenceSunset, regions, spots, favorites };
 }

@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   qualityTier, isVetoed, inAzRange, spotStatus, bestWindow,
-  taipeiDate, taipeiHour, hhmmToDate,
+  taipeiDate, taipeiHour, hhmmToDate, formatClock,
 } from '../src/logic/core.js';
 
 test('qualityTier follows Sunsethue boundaries', () => {
@@ -44,4 +44,9 @@ test('Taipei date and hour roll over at 16:00Z', () => {
 
 test('hhmmToDate converts Taipei wall time to UTC', () => {
   assert.equal(hhmmToDate('2026-10-20', '17:11').toISOString(), '2026-10-20T09:11:00.000Z');
+});
+
+test('formatClock shows Taipei date with weekday and HH:MM', () => {
+  assert.deepEqual(formatClock(new Date('2026-10-21T06:41:30Z')), { date: '10月21日（三）', time: '14:41' });
+  assert.deepEqual(formatClock(new Date('2026-10-24T16:05:00Z')), { date: '10月25日（日）', time: '00:05' });
 });
