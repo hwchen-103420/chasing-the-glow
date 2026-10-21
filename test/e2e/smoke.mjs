@@ -40,6 +40,8 @@ try {
   assert.equal(await page.locator('.pin').count(), 9);
   assert.equal(await page.locator('#regions > .region-card').count(), 3);
   assert.equal(await page.locator('#regions .quality').nth(1).innerText(), '36');
+  assert.equal(await page.locator('h1.logo img').getAttribute('alt'), '觀夕平台');
+  assert.ok(await page.locator('h1.logo img').evaluate(i => i.complete && i.naturalWidth > 0));
   assert.ok(await page.evaluate(async () => { await document.fonts.ready; return document.fonts.check('16px "GuanXi Round"', '觀夕'); }));
   assert.equal(await page.locator('#today .today-sunset b').innerText(), '17:23');
   assert.match(await page.locator('#today .today-time').innerText(), /^\d{2}:\d{2}$/);
