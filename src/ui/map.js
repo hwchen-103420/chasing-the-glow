@@ -22,7 +22,7 @@ export function renderPins(map, spots, { onClick }) {
       className: `sun-fan${muted}`, stroke: false, interactive: false,
     }).addTo(map);
     if (s.sunAz !== null) {
-      L.polyline([[s.lat, s.lng], destinationPoint(s.lat, s.lng, s.sunAz, 1.5)], {
+      L.polyline([[s.lat, s.lng], destinationPoint(s.lat, s.lng, s.sunAz, 3)], {
         className: `sun-ray${muted}`, interactive: false,
       }).addTo(map);
     }

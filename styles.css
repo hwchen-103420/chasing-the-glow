@@ -110,7 +110,7 @@ h1,h2,h3,p,ul{margin:0}
 .pin.is-selected.tier-great{animation:none}
 
 /* 日落方向短線與可見扇形（Leaflet path 的 className） */
-.sun-ray{stroke:var(--sun);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:1 5;fill:none}
+.sun-ray{stroke:var(--sun);stroke-width:2.5;stroke-linecap:round;fill:none}
 .sun-fan{fill:oklch(0.76 0.15 58);fill-opacity:.12;stroke:none}
 .sun-fan.is-muted{fill:oklch(0.7 0.01 250);fill-opacity:.10}
 .sun-ray.is-muted{stroke:oklch(0.62 0.01 250)}
