@@ -40,6 +40,7 @@ try {
   assert.equal(await page.locator('.pin').count(), 9);
   assert.equal(await page.locator('#regions > .region-card').count(), 3);
   assert.equal(await page.locator('#regions .quality').nth(1).innerText(), '36');
+  assert.ok(await page.evaluate(async () => { await document.fonts.ready; return document.fonts.check('16px "GuanXi Round"', '觀夕'); }));
   assert.equal(await page.locator('#today .today-sunset b').innerText(), '17:23');
   assert.match(await page.locator('#today .today-time').innerText(), /^\d{2}:\d{2}$/);
   assert.match(await page.locator('#today .today-date').innerText(), /^\d{1,2}月\d{1,2}日（[日一二三四五六]）$/);

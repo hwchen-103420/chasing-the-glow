@@ -2,9 +2,11 @@
 :root{
   --paper:#f6f4f0; --surface:#fffdfa; --ink:#2b2622; --ink-2:#6b625a; --ink-3:#958b82; --line:#e7e2db;
   --sun:oklch(0.62 0.19 38);
-  --font:"Noto Sans TC",system-ui,-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;
-  --font-title:"Noto Serif TC","Noto Sans TC",serif;
+  --font:"GuanXi Round",system-ui,-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;
+  --font-title:var(--font);
 }
+/* 粉圓體子集（jf open huninn，SIL OFL 1.1；依授權改名為 GuanXi Round，見 assets/fonts/OFL.txt） */
+@font-face{font-family:"GuanXi Round";src:url(assets/fonts/guanxi-round.woff2) format("woff2");font-weight:400;font-display:swap}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{margin:0;height:100%}

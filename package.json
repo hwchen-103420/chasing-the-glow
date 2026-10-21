@@ -4,7 +4,9 @@
   "type": "module",
   "scripts": {
     "test": "node --test \"test/*.test.js\" \"test/gas/*.test.cjs\"",
-    "validate": "node scripts/validate-spots.mjs"
+    "validate": "node scripts/validate-spots.mjs",
+    "fonts": "python3 scripts/build-fonts.py",
+    "basemap": "node scripts/build-basemap.mjs"
   },
   "devDependencies": {
     "@turf/turf": "^7.4.0",
