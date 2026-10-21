@@ -252,9 +252,9 @@
       "name": "大稻埕碼頭",
       "url": "https://www.youtube.com/watch?v=Ndo_8RuefH4",
       "source": "LIVE Taipei（臺北市官方）",
-      "facing": "不明（標題含台北101，可能朝東或沿河）",
-      "sees_west_sky": null,
-      "verified": false
+      "facing": "W（對岸三重、台北橋，日落方向）",
+      "sees_west_sky": true,
+      "verified": true
     },
     {
       "id": "cam-bishanyan",
@@ -279,7 +279,7 @@
       "name": "淡水渡船頭",
       "url": "https://www.youtube.com/watch?v=wamdV7N__Zg",
       "source": "紅樹林有線電視",
-      "facing": "W–NW",
+      "facing": "W–NW（淡江大橋、河口）",
       "sees_west_sky": true,
       "verified": true
     },
