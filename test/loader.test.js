@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { LOADER, loaderState, frameAt, lightsAt, mixHex, randomTotalMs } from '../src/loader/logic.js';
+import { LOADER, loaderState, frameAt, lightsAt, mixHex, randomTotalMs, movingFraction, randomPauses } from '../src/loader/logic.js';
 
 test('fixed 5 s timeline: anim → hold → fade → done', () => {
   assert.equal(loaderState(0).phase, 'anim');
@@ -40,4 +40,26 @@ test('random length stays within 4–7 s and drives the timeline', () => {
   const cfg = { ...LOADER, totalMs: randomTotalMs(1) };
   assert.equal(loaderState(6000, { cfg }).phase, 'anim');
   assert.equal(loaderState(7000, { cfg }).phase, 'done');
+});
+
+test('pauses freeze progress without changing total length', () => {
+  const pauses = [{ at: 0.4, ms: 500 }];
+  // animMs 4100 → moving 3600; pause starts at 0.4*3600 = 1440 ms
+  assert.equal(movingFraction(1440, 4100, pauses), 0.4);
+  assert.equal(movingFraction(1800, 4100, pauses), 0.4);
+  assert.ok(movingFraction(2000, 4100, pauses) > 0.4);
+  assert.equal(movingFraction(4100, 4100, pauses), 1);
+  assert.equal(loaderState(1800, { pauses }).pct, loaderState(1500, { pauses }).pct);
+  assert.equal(loaderState(LOADER.totalMs, { pauses }).phase, 'done');
+});
+
+test('randomPauses: 1–2 pauses, in range, spaced, capped at 35%', () => {
+  for (let i = 0; i < 500; i++) {
+    const animMs = 3100 + Math.random() * 3000;
+    const ps = randomPauses(animMs);
+    assert.ok(ps.length >= 1 && ps.length <= 2);
+    for (const p of ps) assert.ok(p.at >= 0.15 && p.at <= 0.75 && p.ms > 0 && p.ms <= 900);
+    if (ps.length === 2) assert.ok(ps[1].at - ps[0].at >= 0.15);
+    assert.ok(ps.reduce((a, p) => a + p.ms, 0) <= animMs * 0.35 + 1);
+  }
 });

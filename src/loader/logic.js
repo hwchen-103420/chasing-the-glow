@@ -1,5 +1,5 @@
 // 載入畫面：純函式（不碰 DOM），可在 Node 測試。
-// 時間軸（不等資料）：總長 totalMs 隨機 4–7 秒；最後 0.3s 停在 100%、0.6s 淡出。
+// 時間軸（不等資料）：總長 totalMs 隨機 4–7 秒，動畫中隨機停頓 1–2 次；最後 0.3s 停在 100%、0.6s 淡出。
 
 export const LOADER = {
   totalMs: 5000,        // 從打開頁面到 app 顯示（預設值；實際由 randomTotalMs 決定）
@@ -8,6 +8,8 @@ export const LOADER = {
   holdMs: 300,          // 100% 停留
   fadeMs: 600,          // 淡出
   storageKey: 'loaderPlayed',
+  // 隨機停頓：1–2 次、每次 0.4–0.9 秒，落在動畫的 15%–75% 之間；停頓總和不超過動畫時間的 35%
+  pauses: { minCount: 1, maxCount: 2, minMs: 400, maxMs: 900, from: 0.15, to: 0.75, minGap: 0.15, maxShare: 0.35 },
 
   // SVG 座標（viewBox 0 0 1440 900）
   horizonY: 600,
@@ -43,16 +45,52 @@ function easeInOut(x) {
  * @param {number} elapsed  距離打開頁面的毫秒數（performance.now()）
  * @returns {{phase:'anim'|'hold'|'fade'|'done', pct:number, progress:number, opacity:number}}
  */
-export function loaderState(elapsed, { reduced = false, cfg = LOADER } = {}) {
+export function loaderState(elapsed, { reduced = false, cfg = LOADER, pauses = [] } = {}) {
   const animMs = reduced ? 0 : cfg.totalMs - cfg.holdMs - cfg.fadeMs;
-  const progress = animMs === 0 ? 1 : easeInOut(elapsed / animMs);
-  if (elapsed < animMs) return { phase: 'anim', pct: Math.floor(progress * 99), progress, opacity: 1 };
+  if (elapsed < animMs) {
+    const progress = easeInOut(movingFraction(elapsed, animMs, pauses));
+    return { phase: 'anim', pct: Math.floor(progress * 99), progress, opacity: 1 };
+  }
+  const progress = 1;
   const t = elapsed - animMs;
   if (t < cfg.holdMs) return { phase: 'hold', pct: 100, progress, opacity: 1 };
   if (t < cfg.holdMs + cfg.fadeMs) {
     return { phase: 'fade', pct: 100, progress, opacity: 1 - (t - cfg.holdMs) / cfg.fadeMs };
   }
   return { phase: 'done', pct: 100, progress, opacity: 0 };
+}
+
+/**
+ * 扣掉停頓後，動畫「實際在走」的比例（0–1）。停頓期間比例不變，畫面就停住。
+ * pauses: [{ at: 0–1（在走的比例）, ms }]，依 at 排序。
+ */
+export function movingFraction(elapsed, animMs, pauses = []) {
+  const moveMs = animMs - pauses.reduce((a, p) => a + p.ms, 0);
+  if (moveMs <= 0) return 1;
+  let paused = 0;
+  for (const p of pauses) {
+    const start = p.at * moveMs + paused;
+    if (elapsed < start) break;
+    if (elapsed < start + p.ms) return p.at;
+    paused += p.ms;
+  }
+  return clamp((elapsed - paused) / moveMs, 0, 1);
+}
+
+/** 用亂數產生停頓表（rand 預設 Math.random，測試可傳固定序列） */
+export function randomPauses(animMs, rand = Math.random, cfg = LOADER) {
+  const P = cfg.pauses;
+  const count = P.minCount + Math.floor(rand() * (P.maxCount - P.minCount + 1));
+  const list = [];
+  for (let tries = 0; list.length < count && tries < 20; tries++) {
+    const at = P.from + rand() * (P.to - P.from);
+    if (list.every(p => Math.abs(p.at - at) >= P.minGap)) {
+      list.push({ at, ms: P.minMs + rand() * (P.maxMs - P.minMs) });
+    }
+  }
+  const sum = list.reduce((a, p) => a + p.ms, 0), cap = animMs * P.maxShare;
+  const k = sum > cap ? cap / sum : 1;
+  return list.map(p => ({ at: p.at, ms: Math.round(p.ms * k) })).sort((a, b) => a.at - b.at);
 }
 
 export function mixHex(a, b, t) {
