@@ -1,6 +1,6 @@
-// 載入畫面驅動：每格依 loaderState / frameAt 更新 #loader SVG，固定 5 秒後移除。
+// 載入畫面驅動：每格依 loaderState / frameAt 更新 #loader SVG，長度 4–7 秒隨機。
 // 時間軸以 performance.now() 為準（從打開頁面起算），模組晚載入也不會拉長總時間。
-import { LOADER, loaderState, lightsAt, frameAt } from './logic.js';
+import { LOADER, loaderState, lightsAt, frameAt, randomTotalMs } from './logic.js';
 
 function startLoader(doc = document, win = window) {
   const root = doc.getElementById('loader');
@@ -16,6 +16,8 @@ function startLoader(doc = document, win = window) {
     bridgeLights: $('loader-bridge-lights'), beacon: $('loader-beacon'),
   };
   const H = LOADER.horizonY, R = LOADER.sun.r;
+  // 每次長度隨機（4–7 秒），看起來比較像真的在載入
+  const cfg = { ...LOADER, totalMs: randomTotalMs(Math.random()) };
   let lastPct = -1;
 
   function apply(s, elapsed) {
@@ -53,7 +55,7 @@ function startLoader(doc = document, win = window) {
 
   function tick() {
     const now = win.performance.now();
-    const s = loaderState(now, { reduced });
+    const s = loaderState(now, { reduced, cfg });
     apply(s, now);
     if (s.phase === 'done') {
       try { win.sessionStorage.setItem(LOADER.storageKey, '1'); } catch {}

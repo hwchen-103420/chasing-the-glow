@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { LOADER, loaderState, frameAt, lightsAt, mixHex } from '../src/loader/logic.js';
+import { LOADER, loaderState, frameAt, lightsAt, mixHex, randomTotalMs } from '../src/loader/logic.js';
 
 test('fixed 5 s timeline: anim → hold → fade → done', () => {
   assert.equal(loaderState(0).phase, 'anim');
@@ -32,4 +32,12 @@ test('lights: off before 80%, full at 88%, beacon blinks', () => {
   assert.equal(lightsAt(1, 100).beacon, 1);
   assert.equal(lightsAt(1, 1000).beacon, 0);
   assert.equal(lightsAt(1, 1000, { reduced: true }).beacon, 1);
+});
+
+test('random length stays within 4–7 s and drives the timeline', () => {
+  assert.equal(randomTotalMs(0), 4000);
+  assert.equal(randomTotalMs(0.999999), 7000);
+  const cfg = { ...LOADER, totalMs: randomTotalMs(1) };
+  assert.equal(loaderState(6000, { cfg }).phase, 'anim');
+  assert.equal(loaderState(7000, { cfg }).phase, 'done');
 });

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>觀夕平台</title>
-<!-- 載入畫面：固定 5 秒；同一分頁只播一次，?noloader 跳過 -->
+<!-- 載入畫面：長度 4–7 秒隨機；同一分頁只播一次，?noloader 跳過 -->
 <style id="loader-css">
   #loader { position: fixed; inset: 0; z-index: 9999; background: #e4eff6; }
   #loader svg { display: block; width: 100%; height: 100%; }
@@ -21,8 +21,8 @@
     var skip = /[?&]noloader\b/.test(location.search);
     try { if (sessionStorage.getItem('loaderPlayed') === '1') skip = true; } catch (e) {}
     if (skip) d.classList.add('no-loader');
-    // 保險：載入畫面模組失敗時，8 秒後仍移除遮罩
-    setTimeout(function () { var l = document.getElementById('loader'); if (l) l.remove(); }, 8000);
+    // 保險：載入畫面模組失敗時，10 秒後仍移除遮罩
+    setTimeout(function () { var l = document.getElementById('loader'); if (l) l.remove(); }, 10000);
   })();
 </script>
 <script type="module" src="src/loader/run.js"></script>

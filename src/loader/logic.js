@@ -1,8 +1,10 @@
 // 載入畫面：純函式（不碰 DOM），可在 Node 測試。
-// 固定時間軸（不等資料）：0–4.1s 動畫 0→99%、4.1–4.4s 顯示 100%、4.4–5.0s 淡出 → 5.0s 顯示網站。
+// 時間軸（不等資料）：總長 totalMs 隨機 4–7 秒；最後 0.3s 停在 100%、0.6s 淡出。
 
 export const LOADER = {
-  totalMs: 5000,        // 從打開頁面到 app 顯示
+  totalMs: 5000,        // 從打開頁面到 app 顯示（預設值；實際由 randomTotalMs 決定）
+  totalMinMs: 4000,
+  totalMaxMs: 7000,
   holdMs: 300,          // 100% 停留
   fadeMs: 600,          // 淡出
   storageKey: 'loaderPlayed',
@@ -86,4 +88,9 @@ export function frameAt(p, cfg = LOADER) {
   frame.sunX = from[0] + (to[0] - from[0]) * p;
   frame.sunY = from[1] + (to[1] - from[1]) * p;
   return frame;
+}
+
+/** r ∈ [0,1)（傳入 Math.random()）→ 總長毫秒數，落在 totalMinMs–totalMaxMs */
+export function randomTotalMs(r, cfg = LOADER) {
+  return Math.round(cfg.totalMinMs + clamp(r, 0, 1) * (cfg.totalMaxMs - cfg.totalMinMs));
 }
