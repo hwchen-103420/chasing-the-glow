@@ -30,7 +30,7 @@ async function openPage(apiHandler, viewport = { width: 1440, height: 900 }) {
   await page.route('**/basemaps.cartocdn.com/**', route => route.fulfill({ status: 204 }));
   await page.route('**/youtube.com/**', route => route.fulfill({ status: 200, contentType: 'text/html', body: '' }));
   await page.route(`${API}**`, apiHandler);
-  await page.goto(`http://localhost:${PORT}/?api=${encodeURIComponent(API)}`);
+  await page.goto(`http://localhost:${PORT}/?noloader&api=${encodeURIComponent(API)}`);
   await page.waitForSelector('body[data-ready="true"]', { timeout: 10000 });
   return { page, errors };
 }
